@@ -7,13 +7,13 @@ const { InfuraProvider } = require('@ethersproject/providers');
 const { fromPrivateKey } = require('ethereumjs-wallet');
 const { randomBytes } = require('crypto');
 
-const { types, internalTask } = require("@nomiclabs/buidler/config");
+const { types, internalTask } = require("hardhat/config");
 const Logger = require('./lib/logger');
 
-usePlugin("buidler-ethers-v5");
-usePlugin("buidler-deploy");
-usePlugin("solidity-coverage");
-usePlugin("@nomiclabs/buidler-etherscan");
+require("hardhat-deploy-ethers");
+require("hardhat-deploy");
+require("solidity-coverage");
+require("@nomiclabs/hardhat-etherscan");
 
 const keys = {
   mainnet: fromPrivateKey(
@@ -64,6 +64,7 @@ internalTask('approve_proxy_deployer', 'Approves an address to deploy proxies if
   });
 
 module.exports = {
+  solidity: '0.8.4',
   etherscan: {
     url: "https://api.etherscan.io/api",
     apiKey: process.env.ETHERSCAN_API_KEY,
@@ -100,10 +101,6 @@ module.exports = {
     },
   },
   networks: {
-    buidlerevm: {
-      live: false,
-      saveDeployment: false
-    },
     local: {
       url: url.format({
         protocol: "http:",
